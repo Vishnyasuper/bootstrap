@@ -1,0 +1,190 @@
+.page-footer{
+  background-color: @color-footer;
+  &__inner{
+    .container-fixed();
+    padding: 20px 0;
+  }
+
+  &__items{
+    .make-row();
+    .clearfix();
+  }
+
+  &__item-one{
+    display: none;
+  }
+
+  &__item-two{
+    .make-xs-column(12);
+  }
+
+  &__item-three{
+    .make-xs-column(12);
+    text-align: center;
+  }
+
+  &__logo-title{
+    font-family: @font_OpenSans_ExtraBold;
+    font-size: 31px;
+    color: @color-title-font;
+    text-transform: uppercase;
+  }
+
+  &__logo-description{
+    font-family: @font_OpenSans;
+    font-size: 10px;
+    color: @color-title-font;
+  }
+
+  &__order-phone{
+    position: relative;
+    padding-left: 46px;
+    font-size: 18px;
+    font-family: @font_OpenSans_ExtraBold;
+    color: @color-title-font;
+    text-transform: uppercase;
+    text-align: center;
+    span{
+      display: none;
+    }
+  }
+
+  &__order-phone:before{
+    position: absolute;
+    content: '';
+    display: block;
+    background-image: url("../img/phone.png");
+    background-repeat: no-repeat;
+    left: 55px;
+    bottom: 0;
+    background-position: center;
+    width: 24px;
+    height: 25px;
+  }
+
+  &__email{
+    position: relative;
+    padding-left: 46px;
+    padding-top: 48px;
+    a{
+      font-size: 12px;
+      font-family: @font_OpenSans_ExtraBold;
+      color: @color-title-font;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+  }
+
+  &__email:before{
+    position: absolute;
+    content: '';
+    display: block;
+    background-image: url("../img/email.png");
+    background-repeat: no-repeat;
+    left: 80px;
+    bottom: 0;
+    background-position: center;
+    width: 27px;
+    height: 20px;
+  }
+
+  &__phone{
+    a{
+      font-size: 25px;
+      font-family: @font_OpenSans_ExtraBold;
+      color: @color-title-font;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+  }
+
+
+
+  &__signature{
+    font-size: 12px;
+    font-family: @font_OpenSans_Bold;
+    color: @color-title-font;
+  }
+
+  @media (min-width: @screen-sm){
+    &__order-phone{
+      span{
+        display: inline-block;
+      }
+    }
+
+    &__order-phone:before{
+      left: 230px;
+    }
+
+    &__email:before{
+      left: 310px;
+    }
+
+    &__items{
+      .make-row();
+      .clearfix();
+    }
+
+    &__item-one{
+      display: none;
+    }
+
+    &__item-two{
+      .make-sm-column(12);
+      text-align: center;
+    }
+
+    &__item-three{
+      .make-sm-column(12);
+      text-align: center;
+    }
+  }
+
+  @media (min-width: @screen-lg){
+     &__inner{
+      .container-large-fixed();
+      padding: 60px 0 40px 0;
+    }
+
+    &__items{
+      .make-row();
+      .clearfix();
+    }
+
+    &__item-one{
+      display: block;
+      .make-lg-column(3);
+    }
+
+    &__item-two{
+      .make-lg-column(5);
+    }
+
+    &__item-three{
+      .make-lg-column-offset(2);
+      .make-lg-column(2);
+    }
+
+    &__logo-description{
+      padding-left: 5px;
+      padding-bottom: 15px;
+    }
+
+    &__signature{
+      padding-bottom: 10px;
+    }
+
+    &__order-phone{
+      padding-top: 70px;
+    }
+
+    &__order-phone:before{
+      left: 60px;
+    }
+
+    &__email:before{
+      left: 0;
+    }
+  }
+}
