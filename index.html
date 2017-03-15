@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta content='width=device-width, initial-scale=1.0' name='viewport'>
+    <title>Price</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script>// Этот скрипт будет размещён в <head> над всеми внешними объявлениями стилей (link[rel=stylesheet])
+function loadFont(fontName, woffUrl, woff2Url) {
+  // 0. Многие неподдерживаемые браузеры должны останавливать работу тут.
+  var nua = navigator.userAgent;
+  var noSupport = !window.addEventListener // IE8 и ниже
+        || (nua.match(/(Android (2|3|4.0|4.1|4.2|4.3))|(Opera (Mini|Mobi))/) && !nua.match(/Chrome/)) // Android Stock Browser до 4.4 и Opera Mini
+
+  if (noSupport) {
+    return;
+  }
+
+  // 1. Настраиваем localStorage
+  var loSto = {};
+  try {
+    // Устанавливаем вспомогательную переменную для помощи с localStorage,
+    // например, для случаев когда cookies отключены и браузер не даёт к ним доступа.
+    // Иначе могут быть получены исключения, которые полностью остановят загрузку шрифтов.
+    loSto = localStorage || {};
+  } catch(ex) {}
+
+  var localStoragePrefix = 'x-font-' + fontName;
+  var localStorageUrlKey = localStoragePrefix + 'url';
+  var localStorageCssKey = localStoragePrefix + 'css';
+  var storedFontUrl = loSto[localStorageUrlKey];
+  var storedFontCss = loSto[localStorageCssKey];
+
+  // 2. Создаём элемент <style>, который мы используем для вставки шрифта, закодированного в base64.
+  var styleElement = document.createElement('style');
+  styleElement.rel = 'stylesheet';
+  document.head.appendChild(styleElement);
+  // Из-за ошибок IE9 установка styleElement.textContent должна быть после этой строки.
+
+  // 3. Проверяем, находится ли шрифт уже в localStorage и последней ли он версии.
+  if (storedFontCss && (storedFontUrl === woffUrl || storedFontUrl === woff2Url)) {
+    // css до сих пор в localStorage
+    // и были загружены из одного из текущих адресов
+
+    // 4. Применяем стили шрифта.
+    styleElement.textContent = storedFontCss;
+  } else {
+    // Данных нет, или они загружены с устаревшего URL,
+    // поэтому мы должны загрузить их снова.
+
+    // 5. Проверяем поддержку WOFF2 чтобы узнать, какой URL использовать.
+    var url = (woff2Url && supportsWoff2())
+    ? woff2Url // WOFF2 URL передан в функцию и поддерживается.
+    : woffUrl; // Поддерживается только WOFF.
+
+    // 6. Получаем данные с сервера.
+    var request = new XMLHttpRequest();
+    request.open('GET', url);
+    request.onload = function() {
+      if (request.status >= 200 && request.status < 400) {
+        // 7. Обновляем localStorage новыми данными и применяем стили шрифта.
+        loSto[localStorageUrlKey] = url;
+        loSto[localStorageCssKey] = styleElement.textContent = request.responseText;
+      }
+    };
+    request.send();
+  }
+
+  function supportsWoff2() {
+    // https://github.com/filamentgroup/woff2-feature-test
+    if( !( "FontFace" in window ) ) {
+      return false;
+    }
+
+    var f = new FontFace('t', 'url( "data:application/font-woff2;base64,d09GMgABAAAAAADcAAoAAAAAAggAAACWAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABk4ALAoUNAE2AiQDCAsGAAQgBSAHIBtvAcieB3aD8wURQ+TZazbRE9HvF5vde4KCYGhiCgq/NKPF0i6UIsZynbP+Xi9Ng+XLbNlmNz/xIBBqq61FIQRJhC/+QA/08PJQJ3sK5TZFMlWzC/iK5GUN40psgqvxwBjBOg6JUSJ7ewyKE2AAaXZrfUB4v+hze37ugJ9d+DeYqiDwVgCawviwVFGnuttkLqIMGivmDg" ) format( "woff2" )', {});
+    f.load()['catch'](function() {});
+
+    return f.status == 'loading';
+  }
+}
+
+
+// Вызываем функцию подгрузки
+loadFont(
+    'Open Sans',                      // название шрифта
+    '/css/font_opensans_woff.css?v=1',   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF
+    '/css/font_opensans_woff2.css?v=1'   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF2
+  );
+loadFont(
+    'Open Sans_Bold',                      // название шрифта
+    '/css/font_opensans_woff.css?v=1',   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF
+    '/css/font_opensans_woff2.css?v=1'   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF2
+  );
+loadFont(
+    'Open Sans_Light',                      // название шрифта
+    '/css/font_opensans_woff.css?v=1',   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF
+    '/css/font_opensans_woff2.css?v=1'   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF2
+  );
+loadFont(
+    'Open Sans_ExtraBold',                      // название шрифта
+    '/css/font_opensans_woff.css?v=1',   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF
+    '/css/font_opensans_woff2.css?v=1'   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF2
+  );
+loadFont(
+    'PT Sans Caption',                      // название шрифта
+    '/css/font_opensans_woff.css?v=1',   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF
+    '/css/font_opensans_woff2.css?v=1'   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF2
+  );
+loadFont(
+    'PT Serif Caption',                      // название шрифта
+   '/css/font_opensans_woff.css?v=1',   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF
+    '/css/font_opensans_woff2.css?v=1'   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF2
+  );
+loadFont(
+    'PT Serif Regular',                      // название шрифта
+   '/css/font_opensans_woff.css?v=1',   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF
+    '/css/font_opensans_woff2.css?v=1'   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF2
+  );
+loadFont(
+    'PT SansRegular',                      // название шрифта
+   '/css/font_opensans_woff.css?v=1',   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF
+    '/css/font_opensans_woff2.css?v=1'   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF2
+  );
+loadFont(
+    'PT SansItalic',                      // название шрифта
+   '/css/font_opensans_woff.css?v=1',   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF
+    '/css/font_opensans_woff2.css?v=1'   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF2
+  );
+loadFont(
+    'PT SansBold',                      // название шрифта
+   '/css/font_opensans_woff.css?v=1',   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF
+    '/css/font_opensans_woff2.css?v=1'   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF2
+  );
+// loadFont(
+//     'PrototypsterMedium',                      // название шрифта
+//    '/css/font_opensans_woff.css?v=1'   // откуда с сервака тянуть CSS с закодированным в base64 форматом WOFF
+
+//   );
+</script>
+    <noscript><link rel="stylesheet" href="css/font_opensans_woff2.css"></noscript>
+</head>
+<body>
+  <!-- header -->
+  <div class="page-header" id="to-menu">
+    <div class="page-header__inner">
+      <nav class="main-nav">
+        <ul class="main-nav__list">
+          <li class="main-nav__item"><a href="#">Главная</a></li>
+          <li class="main-nav__item"><a href="#">Сайты</a></li>
+          <li class="main-nav__item"><a href="#">Рассылки</a></li>
+          <li class="main-nav__item"><a href="#">Полиграфия</a></li>
+          <li class="main-nav__item main-nav__item--active"><a href="#">Цены</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <main>
+    <div class="price-title">
+      <div class="price-title__inner">
+        <div class="price-title__name">
+          Цены
+        </div>
+      </div>
+    </div>
+    <div class="pricing">
+      <div class="pricing__inner">
+        <div class="pricing__site pricing__site--one">
+          <div class="pricing__site-title">
+            Сайты
+          </div>
+          <ul class="pricing__list-item pricing__title">
+            <li class="pricing__item">
+              <div class="pricing__item-description">Дизайн главной страницы</div>
+              <div class="pricing__item-cost">Бесплатно!</div>
+            </li>
+            <li class="pricing__item">
+              <div class="pricing__item-description">В случае утверждения дизайна и начала работы.</div>
+            </li>
+          </ul>
+          <ul class="pricing__list">
+            <li class="pricing__title">
+              <div class="pricing__name">Сайт компании</div>
+              <ul class="pricing__list-item">
+                <li class="pricing__item">
+                  <div class="pricing__item-description">Каждая уникальная страница</div>
+                  <div class="pricing__item-cost">3 000 руб.</div>
+                </li>
+                <li class="pricing__item">
+                  <div class="pricing__item-description">Каждая повторяющаяся страница</div>
+                  <div class="pricing__item-cost">1000 руб.</div>
+                </li>
+                <li class="pricing__item">
+                  <div class="pricing__item-description">
+                    <ul>
+                      <li class="pricing__discount"><span>При заказе</span> от 30 страниц скидка</li>
+                      <li class="pricing__discount pricing__discount-indent">от 50 страниц скидка</li>
+                      <li class="pricing__discount pricing__discount-indent">от 100 страниц скидка</li>
+                    </ul>
+                  </div>
+                  <div class="pricing__item-cost">
+                    <ul>
+                      <li class="pricing__discount-value">10%</li>
+                      <li class="pricing__discount-value">20%</li>
+                      <li class="pricing__discount-value">30%</li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="pricing__item">
+                  <div class="pricing__item-description">Минимальный заказ</div>
+                  <div class="pricing__item-cost">29 000 руб.</div>
+                </li>
+              </ul>
+            </li>
+            <li class="pricing__title">
+              <div class="pricing__name">Интернет-магазин</div>
+              <ul class="pricing__list-item">
+                <li class="pricing__item">
+                  <div class="pricing__item-description">Каждая уникальная страница</div>
+                  <div class="pricing__item-cost">3 000 руб.</div>
+                </li>
+                <li class="pricing__item">
+                  <div class="pricing__item-description">Каждая повторяющаяся страница</div>
+                  <div class="pricing__item-cost">1000 руб.</div>
+                </li>
+                <li class="pricing__item">
+                  <div class="pricing__item-description">Настройка модуля интернет - магазина</div>
+                  <div class="pricing__item-cost">20 000 руб.</div>
+                </li>
+                <li class="pricing__item">
+                  <div class="pricing__item-description">
+                    <ul>
+                      <li class="pricing__discount"><span>При заказе</span> от 30 страниц скидка</li>
+                      <li class="pricing__discount pricing__discount-indent">от 50 страниц скидка</li>
+                      <li class="pricing__discount pricing__discount-indent">от 100 страниц скидка</li>
+                    </ul>
+                  </div>
+                  <div class="pricing__item-cost">
+                    <ul>
+                      <li class="pricing__discount-value">10%</li>
+                      <li class="pricing__discount-value">20%</li>
+                      <li class="pricing__discount-value">30%</li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="pricing__item">
+                  <div class="pricing__item-description">Минимальный заказ</div>
+                  <div class="pricing__item-cost">49 000 руб.</div>
+                </li>
+              </ul>
+            </li>
+            <li class="pricing__title">
+              <div class="pricing__name pricing__name--indent">В стоимость входят</div>
+              <ul class="pricing__list-item">
+                <li class="pricing__item">
+                  <div class="pricing__item-description pricing__item-description--width">Маркетинговая корректировка текстов (по желанию заказчика);</div>
+                </li>
+                <li class="pricing__item">
+                  <div class="pricing__item-description pricing__item-description--width">Проверка орфографических ошибок;</div>
+                </li>
+                <li class="pricing__item">
+                  <div class="pricing__item-description pricing__item-description--width">Размещение сайта на хостинге заказчика;</div>
+                </li>
+                <li class="pricing__item">
+                  <div class="pricing__item-description pricing__item-description--width">(оплата услуг хостинга осуществляется заказчиком</div>
+                </li>
+                <li class="pricing__item">
+                  <div class="pricing__item-description pricing__item-description--width">самостоятельно согласно выбранного тарифа)</div>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="pricing__site pricing__site--two">
+          <div class="pricing__site-title">
+            Рассылки
+          </div>
+          <ul class="pricing__list-item pricing__title">
+            <li class="pricing__item">
+              <div class="pricing__item-description">Страница</div>
+              <div class="pricing__item-cost">2000 руб.</div>
+            </li>
+            <li class="pricing__item">
+              <div class="pricing__item-description">Минимальный заказ</div>
+              <div class="pricing__item-cost">8000 руб.</div>
+            </li>
+          </ul>
+          <ul class="pricing__list">
+            <li class="pricing__title">
+              <div class="pricing__name pricing__name--indent">В стоимость входят</div>
+              <ul class="pricing__list-item">
+                <li class="pricing__item">
+                  <div class="pricing__item-description pricing__item-description--width">Маркетинговая корректировка текстов (по желанию заказчика);</div>
+                </li>
+                <li class="pricing__item">
+                  <div class="pricing__item-description pricing__item-description--width">Проверка орфографических ошибок</div>
+                </li>
+              </ul>
+            </li>
+          </ul>
+
+        </div>
+        <div class="pricing__site pricing__site--three">
+          <div class="pricing__site-title">
+            Полиграфия
+          </div>
+          <ul class="pricing__list">
+            <li class="pricing__title">
+              <div class="pricing__name pricing__name--indent">Буклет</div>
+              <ul class="pricing__list-item">
+                <li class="pricing__item">
+                  <div class="pricing__item-description">Страница</div>
+                  <div class="pricing__item-cost">5000 руб.</div>
+                </li>
+              </ul>
+            </li>
+            <li class="pricing__title">
+              <div class="pricing__name pricing__name--indent">Меню</div>
+              <ul class="pricing__list-item">
+                <li class="pricing__item">
+                  <div class="pricing__item-description">Страница (формат А3, А4)</div>
+                  <div class="pricing__item-cost">5000 руб.</div>
+                </li>
+              </ul>
+            </li>
+            <li class="pricing__title">
+              <div class="pricing__name pricing__name--indent">Дизайн упаковки</div>
+              <ul class="pricing__list-item">
+                <li class="pricing__item">
+                  <div class="pricing__item-description">Общая концепция</div>
+                  <div class="pricing__item-cost">20 000 руб.</div>
+                </li>
+                <li class="pricing__item">
+                  <div class="pricing__item-description">Далее, каждая упаковка</div>
+                  <div class="pricing__item-cost">2000 руб.</div>
+                </li>
+              </ul>
+            </li>
+            <li class="pricing__title">
+              <div class="pricing__name pricing__name--indent">В стоимость входят</div>
+              <ul class="pricing__list-item">
+                <li class="pricing__item">
+                  <div class="pricing__item-description pricing__item-description--width">Маркетинговая корректировка текстов (по желанию заказчика);</div>
+                </li>
+                <li class="pricing__item">
+                  <div class="pricing__item-description pricing__item-description--width">Проверка орфографических ошибок;</div>
+                </li>
+              </ul>
+            </li>
+            <li class="pricing__title">
+              <div class="pricing__payment">Принимаем к оплате:</div>
+            </li>
+          </ul>
+        </div>
+
+
+
+      </div>
+    </div>
+
+  </main>
+  <!-- footer -->
+  <div class="page-footer">
+    <div class="page-footer__inner">
+      <div class="page-footer__items">
+        <div class="page-footer__item-one">
+          <div class="page-footer__logo">
+            <div class="page-footer__logo-title">Global</div>
+            <div class="page-footer__logo-description">Design&Marketing</div>
+          </div>
+          <div class="page-footer__signature">&copy; 2017 Global</div>
+          <div class="page-footer__phone"><a href="tel:78123101010">(812) 310 10 10</a></div>
+        </div>
+        <div class="page-footer__item-two">
+          <nav class="main-nav--footer">
+            <ul class="main-nav__list">
+              <li class="main-nav__item"><a href="#">Главная</a></li>
+              <li class="main-nav__item"><a href="#">Сайты</a></li>
+              <li class="main-nav__item"><a href="#">Рассылки</a></li>
+              <li class="main-nav__item"><a href="#">Полгирафия</a></li>
+              <li class="main-nav__item"><a href="#">Цены</a></li>
+            </ul>
+          </nav>
+          <div class="page-footer__order-phone"><span>Заказать</span> обратный звонок</div>
+        </div>
+        <div class="page-footer__item-three">
+        <div class="socio">
+            <a href="#" class="socio__item socio__item--fb"></a>
+            <a href="#" class="socio__item socio__item--vk"></a>
+            <a href="#" class="socio__item socio__item--yt"></a>
+            <a href="#" class="socio__item socio__item--in"></a>
+          </div>
+          <div class="page-footer__email"><a href="mailto:901987@mail.ru">901987@mail.ru</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="js/script.min.js"></script>
+</body>
+</html>
